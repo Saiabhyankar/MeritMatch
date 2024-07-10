@@ -50,6 +50,12 @@ android {
 }
 
 dependencies {
+    //Compose ViewModel
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.2")
+    //Network Calls
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    //Json to Kotlin Object Mapping
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("androidx.compose.ui:ui:1.6.8")
     implementation("androidx.compose.material:material:1.6.8")
     implementation ("androidx.compose.ui:ui-tooling:1.6.8")
