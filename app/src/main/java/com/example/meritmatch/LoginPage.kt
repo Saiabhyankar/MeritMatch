@@ -90,7 +90,7 @@ fun Login(){
 //                    modifier= Modifier
 //                        .size(45.dp)
 //                        .offset(220.dp, -95.dp))
-            Button(onClick = { sendUserDetails(UserDetails(userName.value, password.value)) },
+            Button(onClick = {  },
                 shape = MaterialTheme.shapes.extraSmall,
                 modifier = Modifier
                     .clip(shape = RoundedCornerShape(15.dp))
