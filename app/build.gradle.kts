@@ -56,6 +56,8 @@ dependencies {
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     //Json to Kotlin Object Mapping
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.squareup.okhttp3:okhttp:4.9.1")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.9.1")
     implementation("androidx.compose.ui:ui:1.6.8")
     implementation("androidx.compose.material:material:1.6.8")
     implementation ("androidx.compose.ui:ui-tooling:1.6.8")

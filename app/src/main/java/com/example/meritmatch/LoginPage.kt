@@ -90,7 +90,7 @@ fun Login(){
 //                    modifier= Modifier
 //                        .size(45.dp)
 //                        .offset(220.dp, -95.dp))
-            Button(onClick = { /*TODO*/ },
+            Button(onClick = { sendUserDetails(UserDetails(userName.value, password.value)) },
                 shape = MaterialTheme.shapes.extraSmall,
                 modifier = Modifier
                     .clip(shape = RoundedCornerShape(15.dp))
@@ -120,9 +120,10 @@ fun Login(){
             Image(painter = detailing, contentDescription = null,
                 modifier = Modifier
                     .size(30.dp)
-                    .offset(110.dp,75.dp))
+                    .offset(110.dp, 75.dp))
         }
 
         }
+
     }
 
