@@ -33,12 +33,17 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 var userName= mutableStateOf("")
 var loginUserNameClick=mutableStateOf(false)
 var loginPasswordClick= mutableStateOf(false)
 var password=mutableStateOf("")
 var signUpOnClick= mutableStateOf(false)
+var userNameFromBackend= mutableStateOf("")
+var passWordFromBackend= mutableStateOf("")
 @Composable
 fun Login(){
     val customFont= FontFamily(
@@ -76,7 +81,7 @@ fun Login(){
                     modifier = Modifier.clickable {
                         loginPasswordClick.value=true
                     })
-
+                //RetrieveValue()
                 Button(onClick = { },
                     colors = ButtonDefaults.buttonColors(Color.Transparent),
                     modifier= Modifier
@@ -90,7 +95,19 @@ fun Login(){
 //                    modifier= Modifier
 //                        .size(45.dp)
 //                        .offset(220.dp, -95.dp))
-            Button(onClick = {  },
+            Button(//enabled = (userName.value!="" && password.value!=""),
+                onClick = {
+                        CoroutineScope(Dispatchers.IO).launch {
+                            try {
+                                client.postUserDetails(UserDetails(userName.value, password.value))
+                                // Handle success
+                            } catch (e: Exception) {
+                                // Handle error
+                                println("error: ${e.message}")
+                            }
+                        }
+                }
+                ,
                 shape = MaterialTheme.shapes.extraSmall,
                 modifier = Modifier
                     .clip(shape = RoundedCornerShape(15.dp))
