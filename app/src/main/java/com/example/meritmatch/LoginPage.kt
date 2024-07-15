@@ -1,8 +1,6 @@
 package com.example.meritmatch
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.material3.Button
@@ -19,17 +16,13 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -37,32 +30,32 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-var userName= mutableStateOf("")
-var loginUserNameClick=mutableStateOf(false)
-var loginPasswordClick= mutableStateOf(false)
-var password=mutableStateOf("")
-var signUpOnClick= mutableStateOf(false)
-var userNameFromBackend= mutableStateOf("")
-var passWordFromBackend= mutableStateOf("")
+
 @Composable
-fun Login(){
+fun Login(navigate:()->Unit){
     val customFont= FontFamily(
         Font(R.font.firasans)
     )
+    val logo= painterResource(id = R.drawable.logo)
     val login= painterResource(id = R.drawable.login)
     val view= painterResource(id = R.drawable.viewpasword)
     val detailing= painterResource(id = R.drawable.detailing)
 
     Box(modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center) {
+
         Column (modifier = Modifier.offset(y=-180.dp)){
+            Image(painter = logo, contentDescription = null,
+                modifier = Modifier
+                    .size(40.dp)
+                    .offset(0.dp,-200.dp))
             Text(
                 "Merit Match Authentication",
                 fontSize = 30.sp,
-                modifier = Modifier.offset(y = -150.dp)
+                modifier = Modifier.offset(y = -170.dp)
             )
         }
-        Column(modifier=Modifier.offset(y=50.dp)){
+        Column(modifier=Modifier.offset(y=70.dp)){
             Image(
                 painter = login, contentDescription = null,
                 modifier = Modifier
@@ -73,39 +66,36 @@ fun Login(){
                 fontSize = 24.sp,
                 modifier = Modifier.offset(y=-50.dp),
                 fontFamily = customFont)
-           TextField(value = userName.value, onValueChange = { userName.value=it}, label = {Text("username" )},
-               modifier = Modifier.clickable {
-                   loginUserNameClick.value=true})
+            TextField(value = userName.value, onValueChange = { userName.value=it}, label = {Text("username" )},
+                modifier = Modifier.clickable {
+                    loginUserNameClick.value=true})
             Spacer(modifier=Modifier.padding(16.dp))
-                TextField(value = password.value, onValueChange = { password.value=it}, label = {Text("password" )},
-                    modifier = Modifier.clickable {
-                        loginPasswordClick.value=true
-                    })
-                //RetrieveValue()
-                Button(onClick = { },
-                    colors = ButtonDefaults.buttonColors(Color.Transparent),
-                    modifier= Modifier
-                        .offset(230.dp, -50.dp)
-                        .size(45.dp)
-                        ) {
-
-
-                }
-//                Image(painter = view, contentDescription = null,
-//                    modifier= Modifier
-//                        .size(45.dp)
-//                        .offset(220.dp, -95.dp))
-            Button(//enabled = (userName.value!="" && password.value!=""),
+            TextField(value = password.value, onValueChange = { password.value=it}, label = {Text("password" )},
+                modifier = Modifier.clickable {
+                    loginPasswordClick.value=true
+                })
+            Button(onClick = { },
+                colors = ButtonDefaults.buttonColors(Color.Transparent),
+                modifier= Modifier
+                    .offset(230.dp, -50.dp)
+                    .size(45.dp)
+            ) {
+            }
+            Button(
                 onClick = {
-                        CoroutineScope(Dispatchers.IO).launch {
-                            try {
-                                client.postUserDetails(UserDetails(userName.value, password.value))
-                                // Handle success
-                            } catch (e: Exception) {
-                                // Handle error
-                                println("error: ${e.message}")
-                            }
+                    pageNum.value=2
+                    navigate()
+                    CoroutineScope(Dispatchers.IO).launch {
+                        try {
+                            Client.postUserDetails(
+                               UserDetails(userName.value, password.value)
+                            )
+                            // Handle success
+                        } catch (e: Exception) {
+                            // Handle error
+                            println("error: ${e.message}")
                         }
+                    }
                 }
                 ,
                 shape = MaterialTheme.shapes.extraSmall,
@@ -113,23 +103,26 @@ fun Login(){
                     .clip(shape = RoundedCornerShape(15.dp))
                     .size(height = 70.dp, width = 250.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = Color(41,106,220,255))) {
-                        Text("Sign In",
-                            fontSize = 30.sp,
-                            color = Color.White,
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
+                Text("Sign In",
+                    fontSize = 30.sp,
+                    color = Color.White,
+                    fontWeight = FontWeight.Bold
+                )
+            }
             Spacer(modifier = Modifier.padding(16.dp))
-                Text("Don't Have Merit-Match Account?",
-                    fontSize = 16.sp,
-                    modifier = Modifier.offset(x=20.dp))
-            Button(onClick = { signUpOnClick.value=true},
+            Text("Don't Have Merit-Match Account?",
+                fontSize = 16.sp,
+                modifier = Modifier.offset(x=20.dp))
+            Button(onClick = {
+                pageNum.value=1
+                navigate()
+                signUpOnClick.value=true},
 
                 modifier = Modifier.offset(x=80.dp,y=10.dp),
                 colors = ButtonDefaults.buttonColors(Color.Transparent)) {
                 Text("Sign Up",
                     color = if(signUpOnClick.value)Color(41,106,220,255)
-                            else Color.Black)
+                    else Color.Black)
             }
             Text("Made With        by Saiabhyankar",
                 modifier = Modifier.offset(x = 10.dp,y=100.dp),
@@ -140,7 +133,6 @@ fun Login(){
                     .offset(110.dp, 75.dp))
         }
 
-        }
-
     }
 
+}

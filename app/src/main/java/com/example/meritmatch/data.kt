@@ -1,10 +1,10 @@
 package com.example.meritmatch
 data class UserDetails(
-    val username:String,
-    val password:String
+    val userName:String,
+    val passWord:String
 )
 
-data class UserAuth(
-    var username: String,
-    var password: String
+data class createResponse(
+    val message:String
 )
+
